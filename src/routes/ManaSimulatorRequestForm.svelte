@@ -23,7 +23,7 @@
 }
 		`;
 
-		fetch("https://100.69.236.43:30001/graphql", {
+		fetch("https://manabase-simulation-gql-deployment:30001/graphql", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
