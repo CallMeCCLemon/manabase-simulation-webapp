@@ -23,7 +23,7 @@
 }
 		`;
 
-		fetch("http://100.69.236.43:30001/graphql", {
+		fetch("https://100.69.236.43:30001/graphql", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
