@@ -23,7 +23,7 @@
 }
 		`;
 
-		fetch("https://manabase-simulation-gql-deployment:30001/graphql", {
+		fetch("https://mtg-mana-sim-app-gql-service:30001/graphql", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
