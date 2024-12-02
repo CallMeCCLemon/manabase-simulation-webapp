@@ -31,8 +31,9 @@
 			},
 			body: JSON.stringify({ query }),
 		}).then((response) => {
-			console.log(response);
-			return response;
+			return response.json();
+		}).then((data) => {
+			console.log(data);
 		});
 
 		// try {
