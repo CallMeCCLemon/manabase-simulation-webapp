@@ -23,7 +23,7 @@
 }
 		`;
 
-		fetch("https://mtg-mana-sim-app-gql-service:30001/graphql", {
+		fetch("https://api-mana-sim.latentlab.cc/graphql", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -31,9 +31,8 @@
 			},
 			body: JSON.stringify({ query }),
 		}).then((response) => {
-			return response.json();
-		}).then((data) => {
-			console.log(data);
+			console.log(response);
+			return response;
 		});
 
 		// try {
