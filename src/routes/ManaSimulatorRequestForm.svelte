@@ -5,11 +5,13 @@
 	let deckList = $state('{}');
 	let targetTurn = $state(3);
 
+	let convertStringToManaCost = (manaCost: string) => {
+		return manaCost;
+	};
+
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget as HTMLFormElement);
-		// const initialHandSize = formData.get('initial-hand-size');
-		// const cardsDrawnPerTurn = formData.get('cards-drawn-per-turn');
 		const onThePlay = formData.get('on-the-play') === 'on';
 		console.log(`initialHandSize: ${initialHandSize}`);
 		console.log(`cardsDrawnPerTurn: ${cardsDrawnPerTurn}`);
@@ -19,12 +21,29 @@
 		console.log(`targetTurn: ${targetTurn}`);
 
 		const query = `
-		{
-				echo(message: "${initialHandSize}") {
-						message
-				}
-		}
+			query {
+  simulate(
+    deckList: ${deckList},
+    gameConfiguration: {
+      initialHandSize: ${initialHandSize},
+      cardsDrawnPerTurn: ${cardsDrawnPerTurn},
+      onThePlay: ${onThePlay}
+    },
+    objective: {
+      targetTurn: ${targetTurn},
+      manaCosts:
+        {
+          colorRequirements: [WHITE, WHITE],
+          genericCost: 1
+        }
+    }
+  ) {
+    message
+    successRate
+  }
+}
 		`;
+		console.log(`Query: ${query}`);
 
 		fetch('https://api-mana-sim.latentlab.cc/graphql', {
 			method: 'POST',
@@ -43,11 +62,10 @@
 </script>
 
 <div>
-	This is the start of the mana request form.
 	<form onsubmit={handleSubmit}>
 		<div class="space-y-12">
 			<div class="border-b border-gray-900/10 pb-12">
-				<h2 class="text-2xl font-bold">Mana Simulator Echo Test Request</h2>
+				<h2 class="text-2xl font-bold">New Mana Simulator Request</h2>
 
 
 				<div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-3">
