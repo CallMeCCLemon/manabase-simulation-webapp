@@ -8,6 +8,13 @@
 		inProgress: false
 	};
 
+	let gqlEndpoint = import.meta.env.VITE_GQL_ENDPOINT
+	if (gqlEndpoint === undefined) {
+		gqlEndpoint = 'https://api-mana-sim.latentlab.cc';
+	}
+
+	console.log(`GQL Endpoint: ${gqlEndpoint}`);
+
 	let initialHandSize = $state(7);
 	let cardsDrawnPerTurn = $state(1);
 	let deckList = $state('{lands:[{name:"Test-Mountain",colors:[RED],entersTapped:false,quantity:24}],nonLands:[{name:"Test-Nonland-1",castingCost:{colorRequirements:[RED,RED,RED],genericCost:1},quantity:1}]}');
@@ -88,7 +95,7 @@
 		`;
 		console.log(`Query: ${query}`);
 		result.inProgress = true;
-		fetch('https://api-mana-sim.latentlab.cc/graphql', {
+		fetch(`${gqlEndpoint}/graphql`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
