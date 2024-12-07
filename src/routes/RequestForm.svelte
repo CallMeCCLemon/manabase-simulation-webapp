@@ -3,14 +3,14 @@
 
 	let initialHandSize = $state(7);
 	let cardsDrawnPerTurn = $state(1);
-	let deckList = $state('{}');
+	let deckList = $state('{lands:[{name:"Test-Mountain",colors:[RED],entersTapped:false,quantity:24}],nonLands:[{name:"Test-Nonland-1",castingCost:{colorRequirements:[RED,RED,RED],genericCost:1},quantity:1}]}');
 	let targetTurn = $state(3);
 
 	const initialManaCost = {
 		White: 0,
 		Blue: 0,
 		Black: 0,
-		Red: 0,
+		Red: 3,
 		Green: 0,
 		Colorless: 0,
 		Generic: 0
@@ -113,7 +113,7 @@
 									name="initial-hand-size"
 									type="number"
 									class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-									value={initialHandSize}
+									bind:value={initialHandSize}
 								/>
 							</div>
 						</div>
@@ -128,7 +128,7 @@
 									name="cards-drawn-per-turn"
 									type="number"
 									class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-									value={cardsDrawnPerTurn}
+									bind:value={cardsDrawnPerTurn}
 								/>
 							</div>
 						</div>
@@ -167,7 +167,7 @@
 								<input
 									id="target-turn"
 									name="target-turn"
-									value={targetTurn}
+									bind:value={targetTurn}
 									type="number"
 									class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
 							</div>
