@@ -1,11 +1,7 @@
 <script lang="ts">
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcomeFallback from '$lib/images/svelte-welcome.png';
-	import ManaSimulatorRequestForm from './ManaSimulatorRequestForm.svelte';
-
-	const handleSubmit = () => {
-		alert("Submitted");
-	}
+	import RequestForm from './RequestForm.svelte';
 </script>
 
 <svelte:head>
@@ -22,10 +18,10 @@
 			</picture>
 		</span>
 
-		to the MTG Mana Simluator
+		MTG Mana Simulator
 	</h1>
 
-	<ManaSimulatorRequestForm handleSubmit={handleSubmit} />
+	<RequestForm />
 </section>
 
 <style>
