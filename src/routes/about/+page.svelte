@@ -7,20 +7,25 @@
 	<h1>About this app</h1>
 
 	<p>
-		This is a <a href="https://svelte.dev/docs/kit">SvelteKit</a> app. You can make your own by typing
-		the following into your command line and following the prompts:
+		This project was created to assist with testing decks for competitive Magic: The Gathering play.
+		The intention is to provide statistical data on the success rate of a deck's manabase. More information
+		on the manabase simulation can be found on the
+		<a href="https://github.com/CallMeCCLemon/manabase-simulation">GitHub repository</a>.
 	</p>
 
-	<pre>npx sv create</pre>
+	<br />
+
+	<h2>Reporting Issues and Requesting Features</h2>
+	<p>
+		If you're looking to request features or report bugs with a simulation, please use the
+		<a href="https://github.com/CallMeCCLemon/manabase-simulation/issues">GitHub Issues</a> page to request a fix of feature.
+	</p>
+
+	<br />
 
 	<p>
-		The page you're looking at is purely static HTML, with no client-side interactivity needed.
-		Because of that, we don't need to load any JavaScript. Try viewing the page's source, or opening
-		the devtools network panel and reloading.
+		If there is an issue you're having with the website, please use the
+		<a href="https://github.com/CallMeCCLemon/manabase-simulation-webapp/issues">GitHub Issues</a> page to report a bug.
 	</p>
 
-	<p>
-		The <a href="/sverdle">Sverdle</a> page illustrates SvelteKit's data loading and form handling. Try
-		using it with JavaScript disabled!
-	</p>
 </div>
