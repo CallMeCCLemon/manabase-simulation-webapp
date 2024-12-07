@@ -1,10 +1,17 @@
 <script lang="ts">
 	import ManaCost from './ManaCost.svelte';
 
+	const defaultResult = {
+		message: '',
+		successRate: 0,
+		ready: false
+	};
+
 	let initialHandSize = $state(7);
 	let cardsDrawnPerTurn = $state(1);
 	let deckList = $state('{lands:[{name:"Test-Mountain",colors:[RED],entersTapped:false,quantity:24}],nonLands:[{name:"Test-Nonland-1",castingCost:{colorRequirements:[RED,RED,RED],genericCost:1},quantity:1}]}');
 	let targetTurn = $state(3);
+	let result = $state(defaultResult);
 
 	const initialManaCost = {
 		White: 0,
@@ -29,18 +36,20 @@
 
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
+
+		result = defaultResult;
 		const formData = new FormData(event.currentTarget as HTMLFormElement);
 		const onThePlay = formData.get('on-the-play') === 'on';
 		let formattedManaCost = Object.entries(manaCost).map(
 			([color, cost]) => {
-				let output = ""
+				let output = '';
 				for (let i = 0; i < cost; i++) {
-					if (color === "Generic") {
+					if (color === 'Generic') {
 						continue;
 					}
-					output += `${color.toUpperCase()}, `
+					output += `${color.toUpperCase()}, `;
 				}
-				return output
+				return output;
 			}
 		).reduce((acc, curr) => acc + curr);
 		formattedManaCost = formattedManaCost.slice(0, -2);
@@ -89,6 +98,11 @@
 			return response.json();
 		}).then((data) => {
 			console.log(data);
+			result = {
+				message: data.data.simulate.message,
+				successRate: data.data.simulate.successRate,
+				ready: true
+			};
 		});
 	}
 </script>
@@ -102,7 +116,7 @@
 					<h2 class="text-md font-medium text-gray-900">
 						Game Configuration:
 					</h2>
-					<div class="mt-10 grid grid-cols-3 gap-x-6 gap-y-8 sm:grid-cols-6">
+					<div class="grid grid-cols-3 gap-x-6 gap-y-8 sm:grid-cols-6">
 						<div class="sm:col-span-3">
 							<label for="initial-hand-size" class="block text-sm/6 font-medium text-gray-900">
 								Initial hand size
@@ -205,9 +219,16 @@
 			</div>
 
 			<div class="mt-2">
-				<p class="text-sm text-gray-500">
-					Output:
-				</p>
+				{#if result.ready}
+					<div class="p-6 border border-gray-300 rounded-lg mt-10 bg-gray-50">
+						Results:
+						<p class="text-sm text-gray-500">
+							Summary: {result.message}
+							<br />
+							Success Rate: {result.successRate}
+						</p>
+					</div>
+				{/if}
 			</div>
 
 		</div>
