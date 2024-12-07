@@ -4,7 +4,8 @@
 	const defaultResult = {
 		message: '',
 		successRate: 0,
-		ready: false
+		ready: false,
+		inProgress: false
 	};
 
 	let initialHandSize = $state(7);
@@ -86,7 +87,7 @@
 			}
 		`;
 		console.log(`Query: ${query}`);
-
+		result.inProgress = true;
 		fetch('https://api-mana-sim.latentlab.cc/graphql', {
 			method: 'POST',
 			headers: {
@@ -101,7 +102,16 @@
 			result = {
 				message: data.data.simulate.message,
 				successRate: data.data.simulate.successRate,
-				ready: true
+				ready: true,
+				inProgress: false
+			};
+		}).catch((err) => {
+			console.log(err);
+			result = {
+				message: 'Error',
+				successRate: 0,
+				ready: true,
+				inProgress: false
 			};
 		});
 	}
@@ -110,8 +120,20 @@
 <div>
 	<form onsubmit={handleSubmit}>
 		<div class="space-y-12">
-			<div class="border-b border-gray-900/10 pb-12">
+			<div class="mt-2">
+				{#if result.ready}
+					<div class="p-6 border border-gray-300 rounded-lg mt-10 bg-gray-50">
+						Results:
+						<p class="text-sm text-gray-500">
+							Summary: {result.message}
+							<br />
+							Success Rate: {result.successRate}
+						</p>
+					</div>
+				{/if}
+			</div>
 
+			<div class="border-b border-gray-900/10 pb-12">
 				<div class="p-6 border border-gray-300 rounded-lg mt-10 bg-gray-50">
 					<h2 class="text-md font-medium text-gray-900">
 						Game Configuration:
@@ -206,31 +228,16 @@
 				</div>
 
 				<div class="mt-6 flex items-center justify-end gap-x-6">
-					<button type="button" class="text-sm/6 font-semibold text-gray-900">
-						Cancel
-					</button>
-					<button
-						type="submit"
-						class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-					>
-						Simulate
-					</button>
+					{#if !result.inProgress}
+						<button
+							type="submit"
+							class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+						>
+							Simulate
+						</button>
+					{/if}
 				</div>
 			</div>
-
-			<div class="mt-2">
-				{#if result.ready}
-					<div class="p-6 border border-gray-300 rounded-lg mt-10 bg-gray-50">
-						Results:
-						<p class="text-sm text-gray-500">
-							Summary: {result.message}
-							<br />
-							Success Rate: {result.successRate}
-						</p>
-					</div>
-				{/if}
-			</div>
-
 		</div>
 	</form>
 </div>
