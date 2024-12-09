@@ -134,6 +134,26 @@
 	}
 </script>
 
+<style>
+    .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1); /* Light gray */
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border-left-color: #09f; /* Blue */
+        animation: spin 1s ease infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
 <div>
 	<form onsubmit={handleSubmit}>
 		<div class="space-y-12">
@@ -144,13 +164,13 @@
 						<p class="text-sm text-gray-500">
 							Summary: {result.message}
 							<br />
-
 						</p>
 						<ol>
 							{#each result.checkpoints as checkpoint}
 								<li>
 									<p class="text-sm text-gray-500">
-										Iterations: {checkpoint.iterations}, Successes: {checkpoint.successes}, Success Rate: {(checkpoint.successes / checkpoint.iterations * 100).toFixed(2)}%
+										Iterations: {checkpoint.iterations}, Successes: {checkpoint.successes}, Success
+										Rate: {(checkpoint.successes / checkpoint.iterations * 100).toFixed(2)}%
 									</p>
 								</li>
 							{/each}
@@ -167,7 +187,7 @@
 			<div class="border-b border-gray-900/10 pb-12">
 				<div class="p-6 border border-gray-300 rounded-lg mt-10 bg-gray-50">
 					<h2 class="text-md font-medium text-gray-900">
-						Game Configuration:
+						Game Configuration
 					</h2>
 					<div class="grid grid-cols-3 gap-x-6 gap-y-8 sm:grid-cols-6">
 						<div class="sm:col-span-3">
@@ -266,6 +286,8 @@
 						>
 							Simulate
 						</button>
+					{:else}
+						<div class="spinner"></div>
 					{/if}
 				</div>
 			</div>
