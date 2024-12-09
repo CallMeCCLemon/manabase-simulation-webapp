@@ -219,9 +219,9 @@
 				</div>
 
 				<div class="p-6 border border-gray-300 rounded-lg mt-10 bg-gray-50">
-					<label for="deck-list" class="block text-sm/6 font-medium text-gray-900">
+					<h2 class="text-md font-medium text-gray-900">
 						Deck List
-					</label>
+					</h2>
 					<div class="mt-2">
 							<textarea
 								bind:value={deckList}
