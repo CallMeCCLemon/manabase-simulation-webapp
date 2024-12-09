@@ -5,10 +5,14 @@
 		message: '',
 		successRate: 0,
 		ready: false,
-		inProgress: false
+		inProgress: false,
+		checkpoints: [{
+			successes: 0,
+			iterations: 0
+		}]
 	};
 
-	let gqlEndpoint = import.meta.env.VITE_GQL_ENDPOINT
+	let gqlEndpoint = import.meta.env.VITE_GQL_ENDPOINT;
 	if (gqlEndpoint === undefined) {
 		gqlEndpoint = 'https://api-mana-sim.latentlab.cc';
 	}
@@ -90,6 +94,10 @@
 				) {
 					message
 					successRate
+					checkpoints {
+					  iterations
+					  successes
+					}
 				}
 			}
 		`;
@@ -110,7 +118,8 @@
 				message: data.data.simulate.message,
 				successRate: data.data.simulate.successRate,
 				ready: true,
-				inProgress: false
+				inProgress: false,
+				checkpoints: data.data.simulate.checkpoints
 			};
 		}).catch((err) => {
 			console.log(err);
@@ -118,7 +127,8 @@
 				message: 'Error',
 				successRate: 0,
 				ready: true,
-				inProgress: false
+				inProgress: false,
+				checkpoints: []
 			};
 		});
 	}
@@ -134,7 +144,21 @@
 						<p class="text-sm text-gray-500">
 							Summary: {result.message}
 							<br />
-							Success Rate: {result.successRate}
+
+						</p>
+						<ol>
+							{#each result.checkpoints as checkpoint}
+								<li>
+									<p class="text-sm text-gray-500">
+										Iterations: {checkpoint.iterations}, Successes: {checkpoint.successes}, Success Rate: {(checkpoint.successes / checkpoint.iterations * 100).toFixed(2)}%
+									</p>
+								</li>
+							{/each}
+						</ol>
+
+						<p class="text-sm text-gray-500">
+							Final Success Rate: {result.successRate}%
+							<br />
 						</p>
 					</div>
 				{/if}
