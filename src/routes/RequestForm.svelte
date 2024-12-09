@@ -17,7 +17,7 @@
 
 	let initialHandSize = $state(7);
 	let cardsDrawnPerTurn = $state(1);
-	let deckList = $state('{lands:[{name:"Test-Mountain",colors:[RED],entersTapped:false,quantity:24}],nonLands:[{name:"Test-Nonland-1",castingCost:{colorRequirements:[RED,RED,RED],genericCost:1},quantity:1}]}');
+	let deckList = $state('{lands:[{name:"Test-Mountain",colors:[RED],entersTapped:false,quantity:24}],nonLands:[{name:"Test-Nonland-1",castingCost:{colorRequirements:[RED,RED,RED],genericCost:1},quantity:36}]}');
 	let targetTurn = $state(3);
 	let result = $state(defaultResult);
 
