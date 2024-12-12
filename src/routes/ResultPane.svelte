@@ -21,75 +21,78 @@
 	let chartObject;
 
 	function chart(node, data) {
-		function setupChart(_data) {
+		function setupChart() {
 			chartObject = new Chart(node, {
-				type: "line",
+				type: 'line',
 				data: {
 					labels: checkpoints.map((checkpoint: { iterations: number; }) => checkpoint.iterations),
 					datasets: [
 						{
-							label: "Iterations",
+							label: 'Success Rate',
 							data: checkpoints.map((checkpoint: {
 								iterations: number;
 								successes: number;
 							}) => (checkpoint.successes / checkpoint.iterations * 100).toFixed(2)),
-							borderWidth: 1,
-						},
-					],
+							borderWidth: 1
+						}
+					]
 				},
 				options: {
-					scales: {
-						y: {
-							beginAtZero: true,
-						},
+					plugins: {
+						tooltip: {
+							callbacks: {
+								label: function(context) {
+									let label = context.dataset.label || '';
+
+									if (label) {
+										label += ': ';
+									}
+									if (context.parsed.y !== null) {
+										label += `${context.parsed.y}%`;
+									}
+									return label;
+								}
+							}
+						}
 					},
-				},
+					scales: {
+						x: {
+							title: {
+								display: true,
+								text: '# of Iterations'
+							}
+						},
+						y: {
+							min: 0,
+							max: 100,
+							title: {
+								display: true,
+								text: 'Success Rate %'
+							},
+							ticks: {
+								// Include a dollar sign in the ticks
+								callback: function(value, index, ticks) {
+									return `${value}%`;
+								}
+							}
+						}
+
+					}
+				}
 			});
 		}
-		setupChart(data)
+
+		setupChart();
 		return {
 			update(data) {
 				chartObject.destroy();
-				setupChart(data);
+				setupChart();
 			},
 			destroy() {
 				chartObject.destroy();
 			}
-		}
+		};
 	}
-	//
-	// $effect(() => {
-	// 	const ctx = document.getElementById('chart') as ChartItem;
-	// 	chartData = {
-	// 		labels: checkpoints.map((checkpoint: { iterations: number; }) => checkpoint.iterations),
-	// 		datasets: [{
-	// 			label: 'Successes',
-	// 			data: checkpoints.map((checkpoint: {
-	// 				iterations: number;
-	// 				successes: number;
-	// 			}) => (checkpoint.successes / checkpoint.iterations * 100).toFixed(2)),
-	// 			backgroundColor: 'rgba(75, 192, 192, 0.2)',
-	// 			borderColor: 'rgba(75, 192, 192, 1)',
-	// 			borderWidth: 1
-	// 		}]
-	// 	};
-	// 	chartConfig = {
-	// 		scales: {
-	// 			y: {
-	// 				beginAtZero: false
-	// 			}
-	// 		}
-	// 	};
-	//
-	//
-	// 	console.log(`ctx: ${JSON.stringify(ctx)}`);
-	// 	chart.update();
-	// });
-	//
-	// onMount(() => {
-	// 	console.log(`chartData: ${JSON.stringify(chartData)}`);
-	// 	console.log(`chartConfig: ${JSON.stringify(chartConfig)}`);
-	// });
 </script>
 
 <div class="mt-2">
