@@ -1,6 +1,11 @@
 <script lang="ts">
 	import ManaCost from './ManaCost.svelte';
 
+	const {
+		simulate,
+		gqlEndpoint,
+	} = $props();
+
 	const defaultResult = {
 		message: '',
 		successRate: 0,
@@ -11,11 +16,6 @@
 			iterations: 0
 		}]
 	};
-
-	let gqlEndpoint = import.meta.env.VITE_GQL_ENDPOINT;
-	if (gqlEndpoint === undefined) {
-		gqlEndpoint = 'https://api-mana-sim.latentlab.cc';
-	}
 
 	console.log(`GQL Endpoint: ${gqlEndpoint}`);
 
@@ -43,94 +43,13 @@
 
 	function updateManaCost(color: keyof typeof initialManaCost, updatedValue: number) {
 		manaCost = setFieldByString(manaCost, color, updatedValue); // Create a new object
-		console.log(`Updated Mana Values - White: ${manaCost.White}, Blue: ${manaCost.Blue}, Black: ${manaCost.Black}, Red: ${manaCost.Red}, Green: ${manaCost.Green}, Colorless: ${manaCost.Colorless}, Generic: ${manaCost.Generic}`);
 	}
 
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
-
-		result = defaultResult;
 		const formData = new FormData(event.currentTarget as HTMLFormElement);
 		const onThePlay = formData.get('on-the-play') === 'on';
-		let formattedManaCost = Object.entries(manaCost).map(
-			([color, cost]) => {
-				let output = '';
-				for (let i = 0; i < cost; i++) {
-					if (color === 'Generic') {
-						continue;
-					}
-					output += `${color.toUpperCase()}, `;
-				}
-				return output;
-			}
-		).reduce((acc, curr) => acc + curr);
-		formattedManaCost = formattedManaCost.slice(0, -2);
-
-		console.log(`initialHandSize: ${initialHandSize}`);
-		console.log(`cardsDrawnPerTurn: ${cardsDrawnPerTurn}`);
-		console.log(`onThePlay: ${onThePlay}`);
-		console.log(`manaValues:`, manaCost);
-		console.log(`deckList: ${deckList}`);
-		console.log(`targetTurn: ${targetTurn}`);
-		console.log(`manaCost:`, manaCost);
-		console.log(`formattedManaCost:`, formattedManaCost);
-
-		const query = `
-			query {
-				simulate(
-					deckList: ${deckList},
-					gameConfiguration: {
-						initialHandSize: ${initialHandSize},
-						cardsDrawnPerTurn: ${cardsDrawnPerTurn},
-						onThePlay: ${onThePlay}
-					},
-					objective: {
-						targetTurn: ${targetTurn},
-						manaCosts: {
-							colorRequirements: [${formattedManaCost}],
-							genericCost: ${manaCost.Generic}
-						}
-					}
-				) {
-					message
-					successRate
-					checkpoints {
-					  iterations
-					  successes
-					}
-				}
-			}
-		`;
-		console.log(`Query: ${query}`);
-		result.inProgress = true;
-		fetch(`${gqlEndpoint}/graphql`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json'
-			},
-			body: JSON.stringify({ query })
-		}).then((response) => {
-			return response.json();
-		}).then((data) => {
-			console.log(data);
-			result = {
-				message: data.data.simulate.message,
-				successRate: data.data.simulate.successRate,
-				ready: true,
-				inProgress: false,
-				checkpoints: data.data.simulate.checkpoints
-			};
-		}).catch((err) => {
-			console.log(err);
-			result = {
-				message: 'Error',
-				successRate: 0,
-				ready: true,
-				inProgress: false,
-				checkpoints: []
-			};
-		});
+		simulate(manaCost, initialHandSize, cardsDrawnPerTurn, deckList, targetTurn, gqlEndpoint, onThePlay);
 	}
 </script>
 
@@ -157,33 +76,6 @@
 <div>
 	<form onsubmit={handleSubmit}>
 		<div class="space-y-12">
-			<div class="mt-2">
-				{#if result.ready}
-					<div class="p-6 border border-gray-300 rounded-lg mt-10 bg-gray-50">
-						Results:
-						<p class="text-sm text-gray-500">
-							Summary: {result.message}
-							<br />
-						</p>
-						<ol>
-							{#each result.checkpoints as checkpoint}
-								<li>
-									<p class="text-sm text-gray-500">
-										Iterations: {checkpoint.iterations}, Successes: {checkpoint.successes}, Success
-										Rate: {(checkpoint.successes / checkpoint.iterations * 100).toFixed(2)}%
-									</p>
-								</li>
-							{/each}
-						</ol>
-
-						<p class="text-sm text-gray-500">
-							Final Success Rate: {result.successRate}%
-							<br />
-						</p>
-					</div>
-				{/if}
-			</div>
-
 			<div class="border-b border-gray-900/10 pb-12">
 				<div class="p-6 border border-gray-300 rounded-lg mt-10 bg-gray-50">
 					<h2 class="text-md font-medium text-gray-900">
