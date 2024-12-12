@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Chart, { type ChartItem } from 'chart.js/auto';
-	import { onMount } from 'svelte';
 
 	let {
 		ready,
@@ -14,14 +13,10 @@
 		checkpoints: { iterations: number, successes: number }[],
 	} = $props();
 
-	let chartConfig;
-	let chartData;
-
-	let dataToGraph = [12, 19, 3, 5, 2, 3, 10, 20, 3, 9, 200, 9, 1, 2];
 	let chartObject;
 
 	function chart(node, data) {
-		function setupChart() {
+		function setupChart(data) {
 			chartObject = new Chart(node, {
 				type: 'line',
 				data: {
@@ -86,7 +81,7 @@
 		return {
 			update(data) {
 				chartObject.destroy();
-				setupChart();
+				setupChart(data);
 			},
 			destroy() {
 				chartObject.destroy();
@@ -102,7 +97,7 @@
 				Results
 			</h2>
 			<div style="width: 600px;">
-				<canvas class='chart' use:chart={dataToGraph}></canvas>
+				<canvas class='chart' use:chart={checkpoints}></canvas>
 			</div>
 			<p class="text-sm text-gray-500">
 				Summary: {message}
