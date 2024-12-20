@@ -21,18 +21,18 @@
 
 	let initialHandSize = $state(7);
 	let cardsDrawnPerTurn = $state(1);
-	let deckList = $state('{lands:[{name:"Test-Mountain",colors:[RED],entersTapped:false,quantity:24}],nonLands:[{name:"Test-Nonland-1",castingCost:{colorRequirements:[RED,RED,RED],genericCost:1},quantity:36}]}');
+	let deckList = $state(`{lands:[{name:"Boseiju",colors:[GREEN],entersTapped:false,quantity:2},{name:"Forest",colors:[GREEN],entersTapped:false,quantity:1},{name:"LotusField",colors:[],entersTapped:true,quantity:4},{name:"ManaConfluence",colors:[WHITE,BLUE,BLACK,RED,GREEN],entersTapped:false,quantity:4},{name:"Otawara",colors:[BLUE],entersTapped:false,quantity:1},{name:"Razorverge",colors:[WHITE,GREEN],entersTapped:false,quantity:4},{name:"Spara'sHQ",colors:[WHITE,GREEN,BLUE],entersTapped:true,quantity:4},{name:"ThespianStage",colors:[COLORLESS],entersTapped:false,quantity:3},{name:"Bala-GedLand",colors:[GREEN],entersTapped:true,quantity:3}],nonLands:[{name:"LlanowarElves",castingCost:{colorRequirements:[GREEN],genericCost:1},quantity:34}]}`);
 	let targetTurn = $state(3);
 	let result = $state(defaultResult);
 
 	const initialManaCost = {
-		White: 0,
+		White: 2,
 		Blue: 0,
 		Black: 0,
-		Red: 3,
+		Red: 0,
 		Green: 0,
 		Colorless: 0,
-		Generic: 0
+		Generic: 1
 	};
 
 	let manaCost = $state(initialManaCost);
