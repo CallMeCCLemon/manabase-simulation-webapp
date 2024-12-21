@@ -37,6 +37,7 @@
 	"dependencies": {
 		"@urql/core": "^5.0.8",
 		"chart.js": "^4.4.7",
-		"echarts": "^5.5.1"
+		"echarts": "^5.5.1",
+		"gql-query-builder": "^3.8.0"
 	}
 }

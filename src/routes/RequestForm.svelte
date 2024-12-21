@@ -3,6 +3,7 @@
 
 	const {
 		simulate,
+		validate,
 		gqlEndpoint,
 	} = $props();
 
@@ -21,7 +22,35 @@
 
 	let initialHandSize = $state(7);
 	let cardsDrawnPerTurn = $state(1);
-	let deckList = $state(`{lands:[{name:"Boseiju",colors:[GREEN],entersTapped:false,quantity:2},{name:"Forest",colors:[GREEN],entersTapped:false,quantity:1},{name:"LotusField",colors:[],entersTapped:true,quantity:4},{name:"ManaConfluence",colors:[WHITE,BLUE,BLACK,RED,GREEN],entersTapped:false,quantity:4},{name:"Otawara",colors:[BLUE],entersTapped:false,quantity:1},{name:"Razorverge",colors:[WHITE,GREEN],entersTapped:false,quantity:4},{name:"Spara'sHQ",colors:[WHITE,GREEN,BLUE],entersTapped:true,quantity:4},{name:"ThespianStage",colors:[COLORLESS],entersTapped:false,quantity:3},{name:"Bala-GedLand",colors:[GREEN],entersTapped:true,quantity:3}],nonLands:[{name:"LlanowarElves",castingCost:{colorRequirements:[GREEN],genericCost:1},quantity:34}]}`);
+	let deckList = $state(`Deck
+5 Mountain
+4 Manifold Mouse
+4 Heartfire Hero
+2 Screaming Nemesis
+4 Emberheart Challenger
+4 Monstrous Rage
+2 Rockface Village
+2 Obliterating Bolt
+4 Thornspire Verge
+2 Snakeskin Veil
+3 Monastery Swiftspear
+4 Burst Lightning
+3 Soulstone Sanctuary
+3 Questing Druid // Seek the Beast
+4 Copperline Gorge
+4 Hired Claw
+2 Scorching Dragonfire
+4 Karplusan Forest
+
+Sideboard
+3 Pawpatch Formation
+2 Torch the Tower
+2 Scorching Shot
+2 Tectonic Hazard
+1 Questing Druid
+2 Lithomantic Barrage
+3 Urabrask's Forge
+	`);
 	let targetTurn = $state(3);
 	let result = $state(defaultResult);
 
@@ -43,6 +72,15 @@
 
 	function updateManaCost(color: keyof typeof initialManaCost, updatedValue: number) {
 		manaCost = setFieldByString(manaCost, color, updatedValue); // Create a new object
+	}
+
+	async function handleValidate(formData: FormData) {
+		// event.preventDefault();
+		const formValues = Object.fromEntries(formData.entries());
+		console.log('Form Data:', formValues['deck-list']);
+
+		// const formData = new FormData(event.currentTarget as HTMLFormElement);
+		validate(formValues['deck-list'], gqlEndpoint);
 	}
 
 	async function handleSubmit(event: Event) {
@@ -172,6 +210,19 @@
 
 				<div class="mt-6 flex items-center justify-end gap-x-6">
 					{#if !result.inProgress}
+						<button
+							type="button"
+							class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+							onclick={() => {
+								let form = document.querySelector('form');
+								if (form === null) {
+									return;
+								}
+								handleValidate(new FormData(form))
+							}}
+						>
+							Validate
+						</button>
 						<button
 							type="submit"
 							class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

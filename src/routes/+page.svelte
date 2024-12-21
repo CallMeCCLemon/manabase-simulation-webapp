@@ -1,4 +1,5 @@
 <script lang="ts">
+	import * as gql from 'gql-query-builder'
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcomeFallback from '$lib/images/svelte-welcome.png';
 	import RequestForm from './RequestForm.svelte';
@@ -17,7 +18,7 @@
 	};
 
 	let ready = $state(false);
-	let inProgress = $state(false);
+	let isValid = $state();
 
 	let result = $state(defaultResult);
 
@@ -103,6 +104,48 @@
 				checkpoints: []
 			};
 		});
+	};
+
+	async function validate(deckList: string, gqlEndpoint: string) {
+		result = defaultResult;
+
+		let query = gql.query({
+			operation: 'validate',
+			variables: {
+				deckList: deckList,
+			},
+			fields: [
+				'isValid',
+				{
+					invalidCards: [
+						'name',
+						'reason'
+					]
+				}
+			]
+		})
+
+		console.log(`Query: ${JSON.stringify(query)}`);
+
+		fetch(`${gqlEndpoint}/graphql`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			},
+			body: JSON.stringify(query),
+		}).then((response) => {
+			console.log(`validate response: ${response.status}, ${response.statusText}`);
+			return response.json();
+		}).then((data) => {
+			console.log(`Object: ${JSON.stringify(data)}`);
+			console.log(`validate response: ${data.data.validate.isValid}, ${JSON.stringify(data.data.validate.invalidCards)}`);
+			isValid = data.data.validate.isValid;
+			ready = true;
+			console.log(`Validated: ${ready}`);
+		}).catch((err) => {
+			console.log(err);
+		});
 	}
 
 </script>
@@ -124,7 +167,7 @@
 		MTG Mana Simulator
 	</h1>
 
-	<RequestForm simulate={simulate} gqlEndpoint={gqlEndpoint} />
+	<RequestForm simulate={simulate} gqlEndpoint={gqlEndpoint} validate={validate} />
 	<ResultPane {...result} />
 </section>
 
