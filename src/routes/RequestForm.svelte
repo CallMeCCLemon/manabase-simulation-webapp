@@ -75,11 +75,8 @@ Sideboard
 	}
 
 	async function handleValidate(formData: FormData) {
-		// event.preventDefault();
 		const formValues = Object.fromEntries(formData.entries());
 		console.log('Form Data:', formValues['deck-list']);
-
-		// const formData = new FormData(event.currentTarget as HTMLFormElement);
 		validate(formValues['deck-list'], gqlEndpoint);
 	}
 
@@ -212,7 +209,7 @@ Sideboard
 					{#if !result.inProgress}
 						<button
 							type="button"
-							class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+							class="rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 							onclick={() => {
 								let form = document.querySelector('form');
 								if (form === null) {

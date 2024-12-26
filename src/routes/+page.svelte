@@ -30,8 +30,6 @@
 		targetTurn: number,
 		gqlEndpoint: string,
 		onThePlay: boolean) {
-		result = defaultResult;
-
 		let formattedManaCost: string[] = [];
 		Object.entries(manaCost).forEach(
 			([color, cost]) => {
