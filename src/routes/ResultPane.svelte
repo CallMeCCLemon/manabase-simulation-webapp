@@ -100,8 +100,6 @@
 				<canvas class='chart' use:chart={checkpoints}></canvas>
 			</div>
 			<p class="text-sm text-gray-500">
-				Summary: {message}
-				<br />
 				Final Success Rate: {successRate}%
 				<br />
 			</p>
