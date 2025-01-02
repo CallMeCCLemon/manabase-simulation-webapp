@@ -24,7 +24,7 @@
 
 	onMount(() => {
 		if (!isLoggedIn) {
-			onGoogleScriptLoad(decodeJwtResponse);
+			onGoogleScriptLoad();
 		} else {
 			console.log('User is logged in');
 		}

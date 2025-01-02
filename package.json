@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"dev-local": "vite dev --mode dev-local",
+		"dev-local": "ORIGIN=http://localhost:5173 vite dev --mode dev-local",
 		"dev": "ORIGIN=http://localhost:5173 vite dev --mode development",
 		"build": "vite build",
 		"preview": "vite preview",

@@ -4,6 +4,7 @@
 	import welcomeFallback from '$lib/images/svelte-welcome.png';
 	import RequestForm from './RequestForm.svelte';
 	import ResultPane from './ResultPane.svelte';
+	import { jwt } from '$lib/stores/user';
 
 	const gqlEndpoint = import.meta.env.VITE_GQL_ENDPOINT;
 	const defaultResult = {
@@ -85,7 +86,8 @@
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Accept: 'application/json'
+				Accept: 'application/json',
+				'Authorization': `${$jwt}`
 			},
 			body: JSON.stringify(query)
 		}).then((response) => {

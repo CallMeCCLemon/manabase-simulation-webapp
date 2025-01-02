@@ -1,5 +1,4 @@
-// import { google } from 'googleapis';
-import { user } from '$lib/stores/user';
+import { user, jwt } from '$lib/stores/user';
 
 export const decodeJwtResponse = (token: string) => {
 	const base64Url = token.split('.')[1];
@@ -11,18 +10,14 @@ export const decodeJwtResponse = (token: string) => {
 	return JSON.parse(jsonPayload);
 };
 
-export const onGoogleScriptLoad = (decodeJwtResponse) => {
+export const onGoogleScriptLoad = () => {
 	try {
 		const handleCredentialResponse = (response) => {
 			const responsePayload = decodeJwtResponse(response.credential);
-			console.log('ID: ' + responsePayload.sub);
 			console.log('Full Name: ' + responsePayload.name);
-			console.log('Given Name: ' + responsePayload.given_name);
-			console.log('Family Name: ' + responsePayload.family_name);
-			console.log('Image URL: ' + responsePayload.picture);
-			console.log('Email: ' + responsePayload.email);
-			console.log('Encoded JWT ID token: ' + response.credential);
+			console.log(responsePayload);
 			user.set(responsePayload);
+			jwt.set(response.credential);
 			console.log('Wrote to user store');
 		};
 		google.accounts.id.initialize({
