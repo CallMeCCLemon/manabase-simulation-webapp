@@ -29,7 +29,8 @@ export const onGoogleScriptLoad = () => {
 			{ theme: 'filled_blue', size: 'large', text: "signin_with", shape: "circular", logo_alignment: "left" } // customization attributes
 		);
 		google.accounts.id.prompt(); // also display the One Tap dialog
-	} catch {
+	} catch (err) {
 		console.error('Error initializing Google Sign-In');
+		console.error(err);
 	}
 };
