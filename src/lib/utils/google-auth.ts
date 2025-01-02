@@ -1,3 +1,6 @@
+// import { google } from 'googleapis';
+import { user } from '$lib/stores/user';
+
 export const decodeJwtResponse = (token: string) => {
 	const base64Url = token.split('.')[1];
 	const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -11,8 +14,6 @@ export const decodeJwtResponse = (token: string) => {
 export const onGoogleScriptLoad = (decodeJwtResponse) => {
 	try {
 		const handleCredentialResponse = (response) => {
-			// decodeJwtResponse() is a custom function defined by you
-			// to decode the credential response.
 			const responsePayload = decodeJwtResponse(response.credential);
 			console.log('ID: ' + responsePayload.sub);
 			console.log('Full Name: ' + responsePayload.name);
@@ -21,14 +22,16 @@ export const onGoogleScriptLoad = (decodeJwtResponse) => {
 			console.log('Image URL: ' + responsePayload.picture);
 			console.log('Email: ' + responsePayload.email);
 			console.log('Encoded JWT ID token: ' + response.credential);
+			user.set(responsePayload);
+			console.log('Wrote to user store');
 		};
 		google.accounts.id.initialize({
 			client_id: import.meta.env.VITE_GOOGLE_SIGNIN_API_KEY,
-			callback: handleCredentialResponse
+			callback: handleCredentialResponse,
 		});
 		google.accounts.id.renderButton(
 			document.getElementById('googleSignIn'),
-			{ theme: 'outline', size: 'large', text: "signin_with", shape: "rectangular", logo_alignment: "left" } // customization attributes
+			{ theme: 'filled_blue', size: 'large', text: "signin_with", shape: "circular", logo_alignment: "left" } // customization attributes
 		);
 		google.accounts.id.prompt(); // also display the One Tap dialog
 	} catch {

@@ -3,55 +3,31 @@
 	import logo from '$lib/images/logo.webp';
 	import { onMount } from 'svelte';
 	import { decodeJwtResponse, onGoogleScriptLoad } from '$lib/utils/google-auth';
+	import { user } from '$lib/stores/user';
 
-	// function onSignIn(googleUser) {
-	// 	console.log(googleUser);
-	// 	let profile = googleUser.getBasicProfile();
-	// 	console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-	// 	console.log('Name: ' + profile.getName());
-	// 	console.log('Image URL: ' + profile.getImageUrl());
-	// 	console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-	// }
+	let isLoggedIn = $derived.by(() => {
+		console.log('Show sign in?');
+		console.log($user === null);
+		return $user !== null;
+	});
 
-	// globalThis.onSignIn = onSignIn;
-
-
-
-	//
-	// function signOut() {
-	// 	var auth2 = gapi.auth2.getAuthInstance();
-	// 	auth2.signOut().then(function() {
-	// 		console.log('User signed out.');
-	// 	});
-	// }
-	//
-	// function handleCredentialResponse(response) {
-	// 	console.log('handleCredentialResponse function is firing');
-	// 	console.log(response);
-	// }
-	//
-	// function onSuccess(googleUser) {
-	// 	console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-	// }
-	//
-	// function onFailure(error) {
-	// 	console.log(error);
-	// }
-	//
-	// function renderButton() {
-	// 	return gapi.signin2.render('my-signin2', {
-	// 		'scope': 'profile email',
-	// 		'width': 240,
-	// 		'height': 50,
-	// 		'longtitle': true,
-	// 		'theme': 'dark',
-	// 		'onsuccess': onSuccess,
-	// 		'onfailure': onFailure
-	// 	});
-	// }
+	user.subscribe((updatedUser) => {
+		console.log('User store updated');
+		if (updatedUser) {
+			console.log('User is logged in');
+			console.log(updatedUser);
+		} else {
+			console.log('User is not logged in');
+			console.log(updatedUser);
+		}
+	});
 
 	onMount(() => {
-		onGoogleScriptLoad(decodeJwtResponse);
+		if (!isLoggedIn) {
+			onGoogleScriptLoad(decodeJwtResponse);
+		} else {
+			console.log('User is logged in');
+		}
 	});
 </script>
 
@@ -70,9 +46,11 @@
 			<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
 				<a href="/">Home</a>
 			</li>
-			<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
-				<a href="/about">About</a>
-			</li>
+			{#if isLoggedIn}
+				<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
+					<a href="/about">About</a>
+				</li>
+			{/if}
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
@@ -80,32 +58,13 @@
 	</nav>
 
 	<div class="corner">
-		<!--{renderButton()}-->
-<!--		<div id="g_id_onload"-->
-<!--				 data-client_id="320657207668-nuaaj0bcl2jfh55q27l33tfsnnnf6ed9.apps.googleusercontent.com"-->
-<!--				 data-context="signin"-->
-<!--				 data-ux_mode="redirect"-->
-<!--				 data-login_uri="http://localhost:5173/simulate"-->
-<!--				 data-auto_prompt="false"-->
-<!--				 data-callback="onSignIn"-->
-<!--		>-->
-<!--		</div>-->
-
-<!--		<div class="g_id_signin"-->
-<!--				 data-type="standard"-->
-<!--				 data-shape="pill"-->
-<!--				 data-theme="filled_blue"-->
-<!--				 data-text="signin_with"-->
-<!--				 data-size="large"-->
-<!--				 data-logo_alignment="left">-->
-<!--		</div>-->
-		<div id="googleSignIn"></div>
-
-
-
-		<!--		<div class="g-signin2" data-onsuccess="onSignIn"></div>-->
-
-		<!--		<a href="#" onclick="signOut();">Sign out</a>-->
+		{#if !isLoggedIn}
+			<div id="googleSignIn"></div>
+		{:else}
+			<div>
+				<img class="profile-image" src={$user.picture} alt="Profile" />
+			</div>
+		{/if}
 	</div>
 </header>
 
@@ -116,7 +75,7 @@
     }
 
     .corner {
-        width: 5em;
+        width: 15em;
         height: 3em;
     }
 
@@ -196,5 +155,12 @@
 
     a:hover {
         color: var(--color-theme-1);
+    }
+
+    .profile-image {
+        width: 3em;
+        height: 3em;
+        border-radius: 50%;
+				text-align: right;
     }
 </style>

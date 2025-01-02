@@ -8,7 +8,7 @@
 	<div class="grid grid-cols-7 gap-x-4 gap-y-4">
 		{#each colors as color}
 			<div class="flex flex-col items-center">
-				<label for={`${color}-mana`} class="mb-1">{color}</label>
+				<label for={`${color}-mana`} class="mb-1 text-sm">{color}</label>
 				<input
 					type="number"
 					id={`${color}-mana`}

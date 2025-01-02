@@ -2,8 +2,8 @@
 	import * as gql from 'gql-query-builder';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcomeFallback from '$lib/images/svelte-welcome.png';
-	import RequestForm from './simulate/RequestForm.svelte';
-	import ResultPane from './simulate/ResultPane.svelte';
+	import { user } from '$lib/stores/user';
+	import Simulate from './Simulate.svelte';
 
 	const gqlEndpoint = import.meta.env.VITE_GQL_ENDPOINT;
 	const defaultResult = {
@@ -173,7 +173,11 @@
 
 		MTG Mana Simulator
 		<br />
-		Please Log In Via Google
+		{#if $user === null}
+			Please Log In Via Google
+		{:else}
+			<Simulate />
+		{/if}
 	</h1>
 
 </section>

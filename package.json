@@ -42,6 +42,7 @@
 		"echarts": "^5.5.1",
 		"gapi": "^0.0.3",
 		"google-auth-library": "^9.15.0",
+		"googleapis": "^144.0.0",
 		"gql-query-builder": "^3.8.0",
 		"ramda": "^0.30.1"
 	}

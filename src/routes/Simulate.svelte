@@ -157,18 +157,7 @@
 
 </script>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcomeFallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		MTG Mana Simulator
-	</h1>
-
+<div class="container">
 	<RequestForm simulate={simulate} gqlEndpoint={gqlEndpoint} validate={validate} />
 	<ResultPane {...result} />
-</section>
+</div>
