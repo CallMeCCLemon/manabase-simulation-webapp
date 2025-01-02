@@ -2,8 +2,8 @@
 	import * as gql from 'gql-query-builder';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcomeFallback from '$lib/images/svelte-welcome.png';
-	import RequestForm from './simulate/RequestForm.svelte';
-	import ResultPane from './simulate/ResultPane.svelte';
+	import RequestForm from './RequestForm.svelte';
+	import ResultPane from './ResultPane.svelte';
 
 	const gqlEndpoint = import.meta.env.VITE_GQL_ENDPOINT;
 	const defaultResult = {
@@ -157,11 +157,6 @@
 
 </script>
 
-<svelte:head>
-	<title>MTG Mana Sim</title>
-	<meta name="description" content="MTG Mana Simulator" />
-</svelte:head>
-
 <section>
 	<h1>
 		<span class="welcome">
@@ -172,38 +167,8 @@
 		</span>
 
 		MTG Mana Simulator
-		<br />
-		Please Log In Via Google
 	</h1>
 
+	<RequestForm simulate={simulate} gqlEndpoint={gqlEndpoint} validate={validate} />
+	<ResultPane {...result} />
 </section>
-
-<style>
-    section {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        flex: 0.6;
-    }
-
-    h1 {
-        width: 100%;
-    }
-
-    .welcome {
-        display: block;
-        position: relative;
-        width: 100%;
-        height: 0;
-        padding: 0 0 calc(100% * 495 / 2048) 0;
-    }
-
-    .welcome img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        display: block;
-    }
-</style>

@@ -27,5 +27,7 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY package.json ./
 
 # Define the container's start command
+ENV ORIGIN https://mana-sim.latentlab.cc
+
 EXPOSE 3000
 CMD ["node", "build"]

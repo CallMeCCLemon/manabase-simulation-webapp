@@ -4,7 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"dev-local": "vite dev --mode dev-local",
-		"dev": "vite dev --mode development",
+		"dev": "ORIGIN=http://localhost:5173 vite dev --mode development",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -19,6 +19,7 @@
 		"@sveltejs/adapter-node": "^5.2.9",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
+		"@swc-node/register": "^1.10.9",
 		"autoprefixer": "^10.4.20",
 		"eslint": "^9.7.0",
 		"eslint-config-prettier": "^9.1.0",
@@ -37,7 +38,11 @@
 	"dependencies": {
 		"@urql/core": "^5.0.8",
 		"chart.js": "^4.4.7",
+		"crocks": "^0.12.4",
 		"echarts": "^5.5.1",
-		"gql-query-builder": "^3.8.0"
+		"gapi": "^0.0.3",
+		"google-auth-library": "^9.15.0",
+		"gql-query-builder": "^3.8.0",
+		"ramda": "^0.30.1"
 	}
 }
