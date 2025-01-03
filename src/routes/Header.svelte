@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import logo from '$lib/images/logo.webp';
 	import { onMount } from 'svelte';
-	import { decodeJwtResponse, onGoogleScriptLoad } from '$lib/utils/google-auth';
+	import { onGoogleScriptLoad } from '$lib/utils/google-auth';
 	import { user } from '$lib/stores/user';
 
 	let isLoggedIn = $derived.by(() => {

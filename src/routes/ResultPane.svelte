@@ -5,12 +5,14 @@
 		ready,
 		message,
 		successRate,
-		checkpoints
+		checkpoints,
+		deckStats
 	}: {
 		ready: boolean,
 		message: string,
 		successRate: number,
 		checkpoints: { iterations: number, successes: number }[],
+		deckStats: any,
 	} = $props();
 
 	let chartObject;
@@ -90,19 +92,42 @@
 	}
 </script>
 
+<style>
+    ol {
+        padding-left: 1rem;
+        font-size: 0.8rem;
+				border-radius: 0.5rem;
+				border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+</style>
+
 <div class="mt-2">
 	{#if ready}
-		<div class="p-6 border border-gray-300 rounded-lg mt-10 bg-gray-50">
+		<div class="p-6 border border-gray-300 rounded-lg mt-10 bg-gray-50 text-left">
 			<h2>
 				Results
 			</h2>
-			<div style="width: 600px;">
+			<div style="width: 100%;">
 				<canvas class='chart' use:chart={checkpoints}></canvas>
 			</div>
 			<p class="text-sm text-gray-500">
 				Final Success Rate: {successRate}%
-				<br />
+
 			</p>
+			<ol>
+				<li>Total Cards: {deckStats.totalCards}</li>
+				<li>Lands: {deckStats.lands}</li>
+				<li>Non-Lands: {deckStats.nonLands}</li>
+			</ol>
+			<ol>
+				<li>White Mana: {deckStats.totalManaPips.whiteMana}</li>
+				<li>Blue Mana: {deckStats.totalManaPips.blueMana}</li>
+				<li>Black Mana: {deckStats.totalManaPips.blackMana}</li>
+				<li>Red Mana: {deckStats.totalManaPips.redMana}</li>
+				<li>Green Mana: {deckStats.totalManaPips.greenMana}</li>
+				<li>Colorless Mana: {deckStats.totalManaPips.colorlessMana}</li>
+				<li>Generic Cost: {deckStats.totalManaPips.genericCost}</li>
+			</ol>
 		</div>
 	{/if}
 </div>

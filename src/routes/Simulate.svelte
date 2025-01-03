@@ -1,7 +1,5 @@
 <script lang="ts">
 	import * as gql from 'gql-query-builder';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcomeFallback from '$lib/images/svelte-welcome.png';
 	import RequestForm from './RequestForm.svelte';
 	import ResultPane from './ResultPane.svelte';
 	import { jwt } from '$lib/stores/user';
@@ -15,11 +13,24 @@
 		checkpoints: [{
 			successes: 0,
 			iterations: 0
-		}]
+		}],
+		deckStats: {
+			totalCards: 0,
+			lands: 0,
+			nonLands: 0,
+			totalManaPips: {
+				whiteMana: 0,
+				blueMana: 0,
+				blackMana: 0,
+				redMana: 0,
+				greenMana: 0,
+				colorlessMana: 0,
+				genericCost: 0
+			}
+		}
 	};
 
 	let ready = $state(false);
-	let isValid = $state();
 
 	let result = $state(defaultResult);
 
@@ -76,6 +87,24 @@
 						'iterations',
 						'successes'
 					]
+				},
+				{
+					deckStats: [
+						'totalCards',
+						'lands',
+						'nonLands',
+						{
+							totalManaPips: [
+								'whiteMana',
+								'blueMana',
+								'blackMana',
+								'redMana',
+								'greenMana',
+								'colorlessMana',
+								'genericCost'
+							]
+						}
+					]
 				}
 			]
 		});
@@ -99,7 +128,8 @@
 				successRate: data.data.simulate.successRate,
 				ready: true,
 				inProgress: false,
-				checkpoints: data.data.simulate.checkpoints
+				checkpoints: data.data.simulate.checkpoints,
+				deckStats: data.data.simulate.deckStats
 			};
 			ready = true;
 			console.log(`ready: ${ready}`);
@@ -110,7 +140,21 @@
 				successRate: 0,
 				ready: true,
 				inProgress: false,
-				checkpoints: []
+				checkpoints: [],
+				deckStats: {
+					totalCards: 0,
+					lands: 0,
+					nonLands: 0,
+					totalManaPips: {
+						whiteMana: 0,
+						blueMana: 0,
+						blackMana: 0,
+						redMana: 0,
+						greenMana: 0,
+						colorlessMana: 0,
+						genericCost: 0
+					}
+				}
 			};
 		});
 	}
@@ -149,7 +193,6 @@
 		}).then((data) => {
 			console.log(`Object: ${JSON.stringify(data)}`);
 			console.log(`validate response: ${data.data.validate.isValid}, ${JSON.stringify(data.data.validate.invalidCards)}`);
-			isValid = data.data.validate.isValid;
 			ready = true;
 			console.log(`Validated: ${ready}`);
 		}).catch((err) => {
