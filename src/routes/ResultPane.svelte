@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Chart, { type ChartItem } from 'chart.js/auto';
+	import type { DeckStats } from '$lib/api/model';
 
 	let {
 		ready,
@@ -12,7 +13,7 @@
 		message: string,
 		successRate: number,
 		checkpoints: { iterations: number, successes: number }[],
-		deckStats: any,
+		deckStats: DeckStats,
 	} = $props();
 
 	let chartObject;
@@ -114,20 +115,27 @@
 				Final Success Rate: {successRate}%
 
 			</p>
-			<ol>
-				<li>Total Cards: {deckStats.totalCards}</li>
-				<li>Lands: {deckStats.lands}</li>
-				<li>Non-Lands: {deckStats.nonLands}</li>
-			</ol>
-			<ol>
-				<li>White Mana: {deckStats.totalManaPips.whiteMana}</li>
-				<li>Blue Mana: {deckStats.totalManaPips.blueMana}</li>
-				<li>Black Mana: {deckStats.totalManaPips.blackMana}</li>
-				<li>Red Mana: {deckStats.totalManaPips.redMana}</li>
-				<li>Green Mana: {deckStats.totalManaPips.greenMana}</li>
-				<li>Colorless Mana: {deckStats.totalManaPips.colorlessMana}</li>
-				<li>Generic Cost: {deckStats.totalManaPips.genericCost}</li>
-			</ol>
+			<div>
+				<h2>Deck Stats</h2>
+				<ol>
+					<li>Total Cards: {deckStats.totalCards}</li>
+					<li>Lands: {deckStats.lands}</li>
+					<li>Non-Lands: {deckStats.nonLands}</li>
+				</ol>
+				<h2>Mana Pips for Spells</h2>
+				<ol>
+					<li>White Mana Pips: {deckStats.totalManaPips.whiteMana}</li>
+					<li>Blue Mana Pips: {deckStats.totalManaPips.blueMana}</li>
+					<li>Black Mana Pips: {deckStats.totalManaPips.blackMana}</li>
+					<li>Red Mana Pips: {deckStats.totalManaPips.redMana}</li>
+					<li>Green Mana Pips: {deckStats.totalManaPips.greenMana}</li>
+					<li>Colorless Mana Pips: {deckStats.totalManaPips.colorlessMana}</li>
+					<li>Generic Mana Cost: {deckStats.totalManaPips.genericCost}</li>
+				</ol>
+			</div>
+
+
+
 		</div>
 	{/if}
 </div>

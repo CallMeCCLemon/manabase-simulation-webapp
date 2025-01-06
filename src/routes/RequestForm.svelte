@@ -3,7 +3,6 @@
 
 	const {
 		simulate,
-		validate,
 		gqlEndpoint,
 	} = $props();
 
@@ -72,12 +71,6 @@ Sideboard
 
 	function updateManaCost(color: keyof typeof initialManaCost, updatedValue: number) {
 		manaCost = setFieldByString(manaCost, color, updatedValue); // Create a new object
-	}
-
-	async function handleValidate(formData: FormData) {
-		const formValues = Object.fromEntries(formData.entries());
-		console.log('Form Data:', formValues['deck-list']);
-		validate(formValues['deck-list'], gqlEndpoint);
 	}
 
 	async function handleSubmit(event: Event) {
