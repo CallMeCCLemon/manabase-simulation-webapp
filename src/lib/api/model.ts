@@ -4,6 +4,9 @@ export interface DeckStats {
 	totalCards: number;
 	lands: number;
 	nonLands: number;
+	landStats: {
+		landManaProduction: SimplifiedManaCost;
+	};
 }
 
 export interface SimplifiedManaCost {

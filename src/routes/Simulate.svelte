@@ -1,10 +1,9 @@
 <script lang="ts">
-	import * as gql from 'gql-query-builder';
 	import RequestForm from './RequestForm.svelte';
 	import ResultPane from './ResultPane.svelte';
 	import { jwt } from '$lib/stores/user';
 	import type { SimulateQueryInputs } from '$lib/api/model';
-	import { createSimulateQuery } from '$lib/api/api';
+	import { createSimulateQuery } from '$lib/api/generation';
 
 	const gqlEndpoint = import.meta.env.VITE_GQL_ENDPOINT;
 	const defaultResult = {

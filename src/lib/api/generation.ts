@@ -39,6 +39,20 @@ export function createSimulateQuery(props: SimulateQueryInputs): { query: string
 					'lands',
 					'nonLands',
 					{
+						landStats: [
+							{
+								landManaProduction: [
+									'whiteMana',
+									'blueMana',
+									'blackMana',
+									'redMana',
+									'greenMana',
+									'colorlessMana'
+								]
+							}
+						]
+					},
+					{
 						totalManaPips: [
 							'whiteMana',
 							'blueMana',
@@ -48,7 +62,7 @@ export function createSimulateQuery(props: SimulateQueryInputs): { query: string
 							'colorlessMana',
 							'genericCost'
 						]
-					}
+					},
 				]
 			}
 		]

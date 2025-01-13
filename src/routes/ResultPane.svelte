@@ -132,10 +132,16 @@
 					<li>Colorless Mana Pips: {deckStats.totalManaPips.colorlessMana}</li>
 					<li>Generic Mana Cost: {deckStats.totalManaPips.genericCost}</li>
 				</ol>
+				<h2>Land Mana Production</h2>
+				<ol>
+					<li>White Mana Sources: {deckStats.landStats.landManaProduction.whiteMana}</li>
+					<li>Blue Mana Sources: {deckStats.landStats.landManaProduction.blueMana}</li>
+					<li>Black Mana Sources: {deckStats.landStats.landManaProduction.blackMana}</li>
+					<li>Red Mana Sources: {deckStats.landStats.landManaProduction.redMana}</li>
+					<li>Green Mana Sources: {deckStats.landStats.landManaProduction.greenMana}</li>
+					<li>Colorless Mana Sources: {deckStats.landStats.landManaProduction.colorlessMana}</li>
+				</ol>
 			</div>
-
-
-
 		</div>
 	{/if}
 </div>
